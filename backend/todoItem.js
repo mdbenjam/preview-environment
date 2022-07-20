@@ -16,4 +16,6 @@ const TodoItem = sequelize.define('todos', {
     },
 });
 
+// ADD comment
+
 TodoItem.sync()
