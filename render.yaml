@@ -1,0 +1,35 @@
+previewsEnabled: true
+previewsExpireAfterDays: 3
+services:
+- type: web
+  plan: starter plus
+  previewPlan: starter
+  name: express-backend
+  env: node
+  buildCommand: cd backend && yarn
+  startCommand: cd backend && yarn start
+  envVars:
+  - key: MY_API_KEY
+    value: production-api-key
+    previewValue: test-api-key
+  - key: DB_CONNECTION_STRING
+    fromDatabase:
+      name: postgres_db
+      property: connectionString
+- type: web
+  name: render-todo
+  env: static
+  buildCommand: cd frontend && yarn install && yarn build
+  staticPublishPath: ./frontend/build
+  envVars:
+  - key: REACT_APP_API_HOST
+    fromService:
+      type: web
+      name: express-backend
+      property: host
+databases:
+- name: postgres_db
+  databaseName: test_db
+  user: test_user
+  plan: standard
+  previewPlan: starter
